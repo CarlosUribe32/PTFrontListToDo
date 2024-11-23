@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      To Do-List Demo
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,50 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">To Do-List Demo</ion-title>
     </ion-toolbar>
   </ion-header>
-
+  
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-button shape="round" (click)="clickButtonTasks()">Tareas</ion-button>
+    <ion-button shape="round" (click)="clickButtonCategories()">Categorias</ion-button>
+    <div style="margin-top: 10px;" *ngIf="addCategory">
+      <ion-item>
+        <ion-input type="text" placeholder="Nueva Categoria" [(ngModel)]="newCategory.value"></ion-input>
+        <ion-button (click) = "clickAddCategory()" >Añadir</ion-button>
+      </ion-item>
+      <ion-row *ngFor="let item of listCategories" style="margin-top: 10px;">
+        <ion-col>
+          <ion-input value="{{item.nameCategory}}" (input)="changeCategory($event, item.idCategory)"></ion-input>
+        </ion-col>
+        <ion-col style="margin-top: -4px;">
+          <ion-button style="height: 2px;" (click) = "clickDeleteCategory(item.idCategory)" ><ion-icon style="font-size: 20px;" name="trash-outline"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div style="margin-top: 10px;" *ngIf="addTask">
+      <ion-item>
+        <ion-input type="text" placeholder="Nueva Tarea" [(ngModel)]="newTask.value"></ion-input>
+        <ion-select label="Categoria" placeholder="Categoria" [(ngModel)]="taskCategory.value">
+          <div *ngFor="let item of listCategories">
+            <ion-select-option value="{{item.nameCategory}}">{{item.nameCategory}}</ion-select-option>
+          </div>
+        </ion-select>
+        <ion-button (click) = "clickAddTask()" >Añadir</ion-button>
+      </ion-item>
+      <ion-row *ngFor="let item of listTasks" style="margin-top: 10px; margin-left: 15px;">
+        <ion-checkbox checked="{{item.status}}" (ionChange)="onCheckboxChange(item.idTask)"></ion-checkbox>
+        <ion-col>
+          <ion-label>{{item.nameTask}}</ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>{{getCategoryName(item.idCategory)}}</ion-label>
+        </ion-col>
+        <ion-col style="margin-top: -4px;">
+          <ion-button style="height: 2px;" (click) = "clickDeleteTask(item.idTask)" ><ion-icon style="font-size: 20px;" name="trash-outline"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
   </div>
 </ion-content>
